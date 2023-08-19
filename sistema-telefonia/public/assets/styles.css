@@ -1,0 +1,35 @@
+body {
+    background-color: #fbfbfb;
+}
+
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #222;
+    padding-top: 20px;
+    transition: all 0.3s;
+}
+
+.sidebar-header {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+}
+
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
+
+.list-unstyled li {
+    padding: 10px;
+}
+
+.btn-toggle {
+    margin-top: 10px;
+    width: 100%;
+}
