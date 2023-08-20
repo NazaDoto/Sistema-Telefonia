@@ -1,31 +1,33 @@
 <template>
-  <div>
+  <div class="todo">
     <NavbarComponent></NavbarComponent>
-    <div id="content">
-      
-      <router-view>
-      </router-view>
-      
+    <div class="container mt-4 mb-2">
+      <h1 class="text-center">Bienvenid@, {{ leerUsuario() }}</h1>
+      <router-link v-if="esAdmin()" class="btn btn-success" to="/register">Crear Usuario</router-link>
+      <router-view name="register"></router-view>
     </div>
-    
   </div>
 </template>
   
-  <script>
+<script>
 import NavbarComponent from "./NavbarComponent.vue";
-import router from "../router";
+import { RouterLink } from "vue-router";
 export default {
   components: {
     NavbarComponent,
+    "router-link": RouterLink, 
   },
-  router,
-  methods: {},
+  methods: {
+    leerUsuario() {
+      return localStorage.getItem("usuario");
+    },
+    esAdmin(){
+      return (localStorage.getItem("usuario") == "admin");
+    }
+  },
 };
 </script>
   
 <style scoped>
-#content {
-  margin-left: 250px; /* Ajusta esto para el espacio del sidebar */
-  padding: 20px;
-}
+@media screen and (max-width: 992px) {}
 </style>

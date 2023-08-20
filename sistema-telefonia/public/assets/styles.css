@@ -1,5 +1,9 @@
-body {
-    background-color: #fbfbfb;
+.color-fondo {
+    background-color: #fff1c1;
+}
+
+html {
+    background-color: #fff1c1;
 }
 
 .sidebar {
@@ -32,4 +36,10 @@ body {
 .btn-toggle {
     margin-top: 10px;
     width: 100%;
+}
+
+@media screen and (max-width: 992px) {
+    .container {
+        width: 90vw !important;
+    }
 }

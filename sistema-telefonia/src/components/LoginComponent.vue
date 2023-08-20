@@ -1,60 +1,149 @@
 <template>
-  <div class="fondo">
-    <form @submit.prevent="login">
-      <div>
-        <label for="username">Usuario</label>
-        <input class="form-control mb-3" type="text" v-model="username" required />
+  <div>
+
+    <div class="total">
+
+      <div class="fondo">
+        <h1 class="titulo text-center">Sistema Telefonía</h1>
+        <form class="row g-3 text-center" @submit.prevent="login">
+          <div class="width-size">
+            <label for="usuario">Usuario</label>
+            <input class="form-control mb-3" type="text" v-model="usuario" required />
+          </div>
+          <div class="width-size">
+            <label for="contraseña">Contraseña</label>
+            <input class="form-control mb-4" type="password" v-model="contraseña" required />
+          </div>
+          <div class="text-center col-md-8">
+            <button type="submit" class="btn btn-entrar">Iniciar sesión</button>
+          </div>
+        </form>
       </div>
-      <div>
-        <label for="password">Contraseña</label>
-        <input class="form-control mb-5" type="password" v-model="password" required />
+      <div class="derecha">
       </div>
-      <div>
-        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-      </div>
-    </form>
+    </div>
   </div>
 </template>
   
-  <script>
+<script>
 import axios from "axios";
-
 export default {
+  components: {
+  },
   data() {
     return {
-      username: "",
-      password: "",
+      usuario: "",
+      contraseña: "",
     };
   },
   methods: {
-    async login() {
-      try {
-        const response = await axios.post("/login", {
-          username: this.username,
-          password: this.password,
-        });
-
-        const token = response.data.token;
-        localStorage.setItem("token", token); // Almacena el token en el almacenamiento local
-        this.$router.push("/home"); // Redirige a la pantalla principal
-      } catch (error) {
-        console.error("Error de inicio de sesión:", error);
+    checkAuthentication() {
+      const isAuthenticated = !!localStorage.getItem("token");/* Agrega aquí tu lógica para verificar si el usuario está autenticado */
+      if (isAuthenticated) {
+        this.$router.push("/");
       }
     },
+    async login() {
+      try {
+        // Realiza una solicitud HTTP para iniciar sesión en el backend
+        const response = await axios.post("/login", {
+          usuario: this.usuario,
+          contraseña: this.contraseña,
+        });
+
+        // Maneja la respuesta del backend
+        if (response.status === 200) {
+          // Almacena el token en el almacenamiento local
+          localStorage.setItem("usuario", this.usuario);
+          localStorage.setItem("token", response.data.token);
+
+          // Redirige al usuario a la página de inicio (por ejemplo, /home)
+          this.$router.push("/");
+        } else {
+          // Muestra un mensaje de error si es necesario
+          alert("Inicio de sesión fallido. Verifica tus credenciales.");
+        }
+      } catch (error) {
+        console.error("Error al iniciar sesión:", error);
+        alert(
+          "Ocurrió un error al iniciar sesión. Inténtalo de nuevo más tarde."
+        );
+      }
+    },
+  },
+  mounted() {
+    this.checkAuthentication();
   },
 };
 </script>
 
 <style scoped>
-.fondo{
-  height: 50vh;
-  background-color: aquamarine;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.btn-entrar{
+  color: white;
+  width: 80%;
+  height: 60px;
+  background-color: #e5d599;
+  font-size: large;
 }
-.titulo{
-  display:block;
+.btn-entrar:hover{
+  background-color: #e4cb70;
+}
+h1.titulo{
+  display: block;
+  color: white;
+}
+label {
+  color: white;
+}
 
+.total {
+  width: 100vw;
+}
+
+.fondo {
+  position: absolute;
+  z-index: 1;
+  height: 90vh;
+  width: 30vw;
+  background-color: #ea804c;
+  display: block;
+  justify-content: center;
+  padding-top: 10vh;
+}
+form{
+  justify-content: center;
+  margin: auto !important;
+}
+.derecha {
+  position: relative;
+  z-index: 0;
+  height: 90vh;
+  width: 80vw;
+  margin-left: 20vw;
+  background-image: url(../assets/imagen-fondo.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: right;
+  background-color: rgb(22, 22, 41);
+  display: block;
+}
+
+.titulo {
+  display: block;
+}
+.width-size{
+    width: 25vw;
+  }
+@media screen and (max-width: 992px) {
+  .width-size{
+    width: 80vw !important;
+  }
+  .fondo {
+    width: 100vw;
+    height: 85vh;
+  }
+  .derecha{
+    height: 85vh;
+  }
 }
 </style>

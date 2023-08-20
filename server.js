@@ -10,7 +10,7 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
-    origin: 'http://192.168.0.11:8080' // Cambia esto si tu servidor de desarrollo está en un dominio diferente
+    origin: 'http://192.168.0.19:8080' // Cambia esto si tu servidor de desarrollo está en un dominio diferente
 }));
 
 const connection = mysql.createConnection({
@@ -39,10 +39,10 @@ function generarToken(usuarioId) {
 }
 
 // Función para verificar si un usuario está autenticado mediante token JWT
-function usuarioAutenticado(req) {
-    const token = req.headers.authorization;
+function usuarioAutenticado(token) {
+    //const token = req.headers.authorization;
 
-    if (!token) {
+    if (token) {
         return false;
     }
 
@@ -56,17 +56,17 @@ function usuarioAutenticado(req) {
 
 // Ruta para registrar un usuario
 app.post('/register', (req, res) => {
-    const { username, password } = req.body;
+    const { usuario, contraseña } = req.body;
 
     // Hashea la contraseña antes de almacenarla en la base de datos
-    bcrypt.hash(password, saltRounds, (err, hash) => {
+    bcrypt.hash(contraseña, saltRounds, (err, hash) => {
         if (err) {
             console.error('Error al hashear la contraseña:', err);
             res.status(500).json({ message: 'Error al registrar usuario' });
         } else {
             // Guarda el hash en la base de datos junto con el usuario
-            const query = 'INSERT INTO usuarios (username, password) VALUES (?, ?)';
-            connection.query(query, [username, hash], (err, result) => {
+            const query = 'INSERT INTO usuarios (usuario, contraseña) VALUES (?, ?)';
+            connection.query(query, [usuario, hash], (err, result) => {
                 if (err) {
                     console.error('Error al registrar usuario:', err);
                     res.status(500).json({ message: 'Error al registrar usuario' });
@@ -80,25 +80,25 @@ app.post('/register', (req, res) => {
 
 // Ruta para iniciar sesión
 app.post('/login', (req, res) => {
-    const { username, password } = req.body;
+    const { usuario, contraseña } = req.body;
 
     // Consulta el hash almacenado en la base de datos para el usuario
-    const query = 'SELECT * FROM usuarios WHERE username = ?';
-    connection.query(query, [username], (err, result) => {
+    const query = 'SELECT * FROM usuarios WHERE usuario = ?';
+    connection.query(query, [usuario], (err, result) => {
         if (err) {
             console.error('Error al consultar usuario:', err);
             res.status(500).json({ message: 'Error al iniciar sesión' });
         } else {
             if (result.length === 1) {
-                const storedHash = result[0].password;
+                const storedHash = result[0].contraseña;
                 // Compara la contraseña ingresada con el hash almacenado
-                bcrypt.compare(password, storedHash, (err, result) => {
+                bcrypt.compare(contraseña, storedHash, (err, result) => {
                     if (err) {
                         console.error('Error al comparar contraseñas:', err);
                         res.status(500).json({ message: 'Error al iniciar sesión' });
                     } else {
                         if (result) {
-                            const usuarioId = result[0].id; // Cambia esto a la columna adecuada en tu tabla de usuarios
+                            const usuarioId = result.id; // Cambia esto a la columna adecuada en tu tabla de usuarios
                             const token = generarToken(usuarioId);
                             res.status(200).json({ message: 'Inicio de sesión exitoso', token });
                         } else {
@@ -113,10 +113,139 @@ app.post('/login', (req, res) => {
     });
 });
 
+
+//Cargar BAF
+app.post('/baf', (req, res) => {
+    const {
+        apellido,
+        nombre,
+        tipoDoc,
+        documento,
+        telefono,
+        telefonoAlt,
+        fecha,
+        email,
+        converge,
+        barrio,
+        calleMza,
+        numLote,
+        piso,
+        dpto,
+        entreCalles,
+        razon,
+        cuit,
+        ingresosBrutos,
+        servicio,
+        velocidad,
+        sellout,
+        numTvs,
+        portaFija,
+        observaciones
+    } = req.body;
+
+    // Realiza la inserción en la base de datos
+    const query = `
+        INSERT INTO cliente_baf (apellido, nombre, tipo_documento, documento, telefono, telefono_alt,
+        fecha_nacimiento, email, converge, barrio, calle_mza, num_lote, piso, dpto, entre_calles, razon_social,
+        cuit, ingresos_brutos, servicio, velocidad, sellout, num_tvs, portabilidad_fija, observaciones)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    connection.query(query, [
+        apellido,
+        nombre,
+        tipoDoc,
+        documento,
+        telefono,
+        telefonoAlt,
+        fecha,
+        email,
+        converge,
+        barrio,
+        calleMza,
+        numLote,
+        piso,
+        dpto,
+        entreCalles,
+        razon,
+        cuit,
+        ingresosBrutos,
+        servicio,
+        velocidad,
+        sellout,
+        numTvs,
+        portaFija,
+        observaciones
+    ], (err, result) => {
+        if (err) {
+            console.error('Error al insertar cliente:', err);
+            res.status(500).json({ message: 'Error al insertar cliente' });
+        } else {
+            res.status(200).json({ message: 'Cliente insertado exitosamente' });
+        }
+    });
+});
+
+// Carga clientes portabilidad
+app.post('/portabilidad', (req, res) => {
+    const {
+        apellido,
+        nombre,
+        tipo_doc,
+        documento,
+        telefono,
+        telefono_alt,
+        razon_social,
+        cuit,
+        ingresos_brutos,
+        modalidad,
+        abono,
+        converge,
+        sellout,
+        observaciones,
+    } = req.body;
+
+    const insertQuery = `
+      INSERT INTO cliente_portabilidad
+      (apellido, nombre, tipo_doc, documento, telefono, telefono_alt, razon_social, cuit, ingresos_brutos, modalidad, abono, converge, sellout, observaciones)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    connection.query(
+        insertQuery, [
+            apellido,
+            nombre,
+            tipo_doc,
+            documento,
+            telefono,
+            telefono_alt,
+            razon_social,
+            cuit,
+            ingresos_brutos,
+            modalidad,
+            abono,
+            converge,
+            sellout,
+            observaciones,
+        ],
+        (err, result) => {
+            if (err) {
+                console.error('Error al insertar en la base de datos: ' + err.message);
+                res.status(500).json({ error: 'Error al procesar la solicitud.' });
+            } else {
+                console.log('Registro insertado correctamente.');
+                res.status(200).json({ message: 'Registro insertado correctamente.' });
+            }
+        }
+    );
+});
+
 // Ruta protegida que requiere autenticación
-app.get('/rutaProtegida', (req, res) => {
-    if (usuarioAutenticado(req)) {
-        res.status(200).json({ message: 'Acceso permitido' });
+app.get('/test', (req, res) => {
+    const token = generarToken(4);
+    console.log(token);
+    if (usuarioAutenticado(token)) {
+        res.status(200).json({ message: 'Acceso permitido', token });
     } else {
         res.status(401).json({ message: 'Acceso denegado' });
     }

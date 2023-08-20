@@ -1,49 +1,44 @@
 <template>
-  <div>
-    <div v-if="!usuarioAutenticado()">      
-      <InicioComponent></InicioComponent>
-    </div>
-    <div v-else>
-      <LoginComponent></LoginComponent>
-    </div>
+  <div class="color-fondo">
+    <!-- <LoginComponent v-if="!usuarioAutenticado()"></LoginComponent> -->
+    <router-view></router-view>
+    <PieComponent/>
+    <!-- <RegisterComponent/> -->
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import router from './router';
-import LoginComponent from './components/LoginComponent.vue';
-import InicioComponent from './components/InicioComponent.vue';
+//import axios from 'axios';
+// import LoginComponent from "./components/LoginComponent.vue";
+//  import NavbarComponent from "./components/NavbarComponent.vue";
+// import RegisterComponent from './components/RegisterComponent.vue';
+import PieComponent from './components/PieComponent.vue';
 
 export default {
   components: {
-    LoginComponent,
-    InicioComponent,
+    PieComponent,
+    // LoginComponent,
+    // NavbarComponent,
+    // RegisterComponent,
   },
-  router,
   data() {
     return {
-      message: '',
+      message: "",
     };
   },
   methods: {
-    usuarioAutenticado: function() {
-      return !!localStorage.getItem('token'); // Verifica si el token está presente
-    }
+    checkAuthentication() {
+    const isAuthenticated = !!localStorage.getItem("token");/* Agrega aquí tu lógica para verificar si el usuario está autenticado */
+    if (!isAuthenticated) {
+      this.$router.push("/login");
+    } 
+  },
   },
   mounted() {
-    // Hacer una solicitud al backend al cargar el componente
-    axios.get('/test') // Cambiado a una ruta absoluta que coincide con la configuración de tu servidor
-      .then(response => {
-        this.message = response.data.message;
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
+  this.checkAuthentication();
   },
 };
 </script>
 
 <style scoped>
-
 </style>

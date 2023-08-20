@@ -1,57 +1,71 @@
 <template>
   <div class="">
-    <nav class="navbar navbar-dark navbar-expand-lg bg-dark" id="sidebarMenu">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-        <a href="/" class="navbar-brand">Inicio</a>
-        <!-- <router-link class="navbar-brand" to="/home" exact
-          ><i class="fas fa-chart-area fa-fw me-3"></i><span>Inicio</span>
-        </router-link> -->
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <router-link class="navbar-brand" to="/">{{ leerUsuario() }} | </router-link>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown"
+          aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/baf"
-                ><i class="fas fa-chart-area fa-fw me-3"></i><span>BAF</span>
-              </router-link>
+        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+          <ul class="navbar-nav">
+            <li class="test nav-item">
+              <router-link class="nav-link" to="/">Inicio </router-link>
             </li>
-
-            <li>
-              <router-link to="/portabilidad" class="nav-link"
-                ><i class="fas fa-chart-area fa-fw me-3"></i
-                ><span>Portabilidad</span>
-              </router-link>
+            <li class="nav-item dropdown">
+              <a class="btn btn-dark dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false">
+                BAF
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><router-link class="dropdown-item" to="/baf">Cargar Cliente</router-link></li>
+                <li><a class="dropdown-item" href="#">Informes</a></li>
+              </ul>
             </li>
-
-            <li>
-              <a href="#" class="nav-link" @click="cerrarSesion"
-                ><i class="fas fa-chart-area fa-fw me-3"></i
-                ><span>Salir</span></a
-              >
+            <li class="nav-item dropdown">
+              <a class="btn btn-dark dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false">
+                Portabilidad
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><router-link to="/portabilidad" class="dropdown-item">Carga de Portabilidad </router-link></li>
+                <li><a class="dropdown-item" href="#">Informes</a></li>
+              </ul>
+            </li>
+            <li class="test nav-item">
+              <button  type="button" class="nav-link" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">
+                Salir
+              </button>
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header text-center">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">¿Cerrar sesión?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-footer text-center">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                      <button type="button" class="btn btn-danger" @click="cerrarSesion">Sí, cerrar sesión</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </li>
           </ul>
         </div>
       </div>
     </nav>
-    
   </div>
 </template>
   
-  <script>
+<script>
 import { RouterLink } from "vue-router"; // Asegúrate de tener la importación correcta
 
 export default {
-  name: "BarraLateral",
   methods: {
+    leerUsuario() {
+      return localStorage.getItem("usuario");
+    },
     cerrarSesion() {
       localStorage.removeItem("token"); // Elimina el token del almacenamiento local
       location.reload(); // Redirige a la página de inicio de sesión
@@ -63,20 +77,43 @@ export default {
 };
 </script>
   
-  <style scoped>
-.sidebar {
-  width: 250px;
-  background-color: #333;
-  color: white;
-  padding: 20px;
+<style scoped>
+.navbar-text {
+  font-style: italic;
 }
 
 .nav-link {
   color: white;
+  border-radius: 5px;
 }
 
 .nav-link.active {
+  font-weight: bold;
   background-color: #555;
+}
+
+.nav-link:hover {
+  background-color: gray;
+}
+
+@media screen and (max-width: 992px) {
+  ul {
+    width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .test {
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .navbar-text {}
+
+  .nav-link {
+    padding: 5px !important;
+  }
 }
 </style>
   
