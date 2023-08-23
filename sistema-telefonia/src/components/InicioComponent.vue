@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     leerUsuario() {
-      return localStorage.getItem("usuario");
+      return localStorage.getItem("nombre");
     },
     esAdmin(){
       return (localStorage.getItem("usuario") == "admin");

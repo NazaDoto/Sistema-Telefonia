@@ -27,6 +27,7 @@
   
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   components: {
   },
@@ -54,22 +55,35 @@ export default {
         // Maneja la respuesta del backend
         if (response.status === 200) {
           // Almacena el token en el almacenamiento local
-          localStorage.setItem("usuario", this.usuario);
           localStorage.setItem("token", response.data.token);
-
+          localStorage.setItem("nombre", response.data.nombre);
+          localStorage.setItem("usuario", this.usuario);
           // Redirige al usuario a la página de inicio (por ejemplo, /home)
           this.$router.push("/");
-        } else {
-          // Muestra un mensaje de error si es necesario
-          alert("Inicio de sesión fallido. Verifica tus credenciales.");
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Inicio de sesión exitoso.'
+          })
         }
       } catch (error) {
-        console.error("Error al iniciar sesión:", error);
-        alert(
-          "Ocurrió un error al iniciar sesión. Inténtalo de nuevo más tarde."
-        );
+        Swal.fire({
+          icon: 'error',
+          text: 'Usuario/contraseña incorrectos.'
+        });
       }
-    },
+    }
   },
   mounted() {
     this.checkAuthentication();
@@ -78,20 +92,23 @@ export default {
 </script>
 
 <style scoped>
-.btn-entrar{
+.btn-entrar {
   color: white;
   width: 80%;
   height: 60px;
   background-color: #e5d599;
   font-size: large;
 }
-.btn-entrar:hover{
+
+.btn-entrar:hover {
   background-color: #e4cb70;
 }
-h1.titulo{
+
+h1.titulo {
   display: block;
   color: white;
 }
+
 label {
   color: white;
 }
@@ -110,10 +127,12 @@ label {
   justify-content: center;
   padding-top: 10vh;
 }
-form{
+
+form {
   justify-content: center;
   margin: auto !important;
 }
+
 .derecha {
   position: relative;
   z-index: 0;
@@ -131,18 +150,22 @@ form{
 .titulo {
   display: block;
 }
-.width-size{
-    width: 25vw;
-  }
+
+.width-size {
+  width: 25vw;
+}
+
 @media screen and (max-width: 992px) {
-  .width-size{
+  .width-size {
     width: 80vw !important;
   }
+
   .fondo {
     width: 100vw;
     height: 85vh;
   }
-  .derecha{
+
+  .derecha {
     height: 85vh;
   }
 }

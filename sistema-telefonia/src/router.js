@@ -4,6 +4,7 @@ import BafComponent from './components/BafComponent.vue';
 import PortabilidadComponent from './components/PortabilidadComponent.vue';
 import LoginComponent from './components/LoginComponent.vue';
 import RegisterComponent from './components/RegisterComponent.vue';
+import BafInformesComponent from './components/BafInformesComponent.vue';
 
 const routes = [{
         path: '/',
@@ -27,8 +28,10 @@ const routes = [{
     {
         path: '/register',
         component: RegisterComponent,
-        meta: { requiresAuth: true },
-        name: 'register',
+    },
+    {
+        path: "/bafinformes",
+        component: BafInformesComponent,
     },
 ];
 

@@ -12,26 +12,26 @@
             <li class="test nav-item">
               <router-link class="nav-link" to="/">Inicio </router-link>
             </li>
-            <li class="nav-item dropdown">
-              <a class="btn btn-dark dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false">
+            <li class="test nav-item dropdown">
+              <button class="dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false">
                 BAF
-              </a>
+              </button>
               <ul class="dropdown-menu dropdown-menu-dark">
                 <li><router-link class="dropdown-item" to="/baf">Cargar Cliente</router-link></li>
-                <li><a class="dropdown-item" href="#">Informes</a></li>
+                <li><router-link class="dropdown-item" to="/bafinformes">Informes</router-link></li>
               </ul>
             </li>
-            <li class="nav-item dropdown">
-              <a class="btn btn-dark dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false">
+            <li class="test nav-item dropdown">
+              <button class="dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false">
                 Portabilidad
-              </a>
+              </button>
               <ul class="dropdown-menu dropdown-menu-dark">
                 <li><router-link to="/portabilidad" class="dropdown-item">Carga de Portabilidad </router-link></li>
                 <li><a class="dropdown-item" href="#">Informes</a></li>
               </ul>
             </li>
             <li class="test nav-item">
-              <button  type="button" class="nav-link" data-bs-toggle="modal"
+              <button   class="nav-link" data-bs-toggle="modal"
                 data-bs-target="#exampleModal">
                 Salir
               </button>
@@ -64,7 +64,7 @@ import { RouterLink } from "vue-router"; // Asegúrate de tener la importación 
 export default {
   methods: {
     leerUsuario() {
-      return localStorage.getItem("usuario");
+      return localStorage.getItem("nombre");
     },
     cerrarSesion() {
       localStorage.removeItem("token"); // Elimina el token del almacenamiento local

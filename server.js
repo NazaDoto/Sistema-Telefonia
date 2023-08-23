@@ -10,7 +10,7 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
-    origin: 'http://192.168.0.19:8080' // Cambia esto si tu servidor de desarrollo está en un dominio diferente
+    origin: 'http://192.168.0.11:8080' // Cambia esto si tu servidor de desarrollo está en un dominio diferente
 }));
 
 const connection = mysql.createConnection({
@@ -56,7 +56,7 @@ function usuarioAutenticado(token) {
 
 // Ruta para registrar un usuario
 app.post('/register', (req, res) => {
-    const { usuario, contraseña } = req.body;
+    const { usuario, contraseña, nombre, apellido, email, telefono } = req.body;
 
     // Hashea la contraseña antes de almacenarla en la base de datos
     bcrypt.hash(contraseña, saltRounds, (err, hash) => {
@@ -65,8 +65,8 @@ app.post('/register', (req, res) => {
             res.status(500).json({ message: 'Error al registrar usuario' });
         } else {
             // Guarda el hash en la base de datos junto con el usuario
-            const query = 'INSERT INTO usuarios (usuario, contraseña) VALUES (?, ?)';
-            connection.query(query, [usuario, hash], (err, result) => {
+            const query = 'INSERT INTO usuarios (usuario, contraseña, nombre, apellido, email, telefono) VALUES (?, ?, ?, ?, ?, ?)';
+            connection.query(query, [usuario, hash, nombre, apellido, email, telefono], (err, result) => {
                 if (err) {
                     console.error('Error al registrar usuario:', err);
                     res.status(500).json({ message: 'Error al registrar usuario' });
@@ -91,6 +91,9 @@ app.post('/login', (req, res) => {
         } else {
             if (result.length === 1) {
                 const storedHash = result[0].contraseña;
+                const usuarioId = result[0].id; // Cambia esto a la columna adecuada en tu tabla de usuarios
+                const nombre = result[0].nombre; // Campo de nombre personal
+
                 // Compara la contraseña ingresada con el hash almacenado
                 bcrypt.compare(contraseña, storedHash, (err, result) => {
                     if (err) {
@@ -98,9 +101,8 @@ app.post('/login', (req, res) => {
                         res.status(500).json({ message: 'Error al iniciar sesión' });
                     } else {
                         if (result) {
-                            const usuarioId = result.id; // Cambia esto a la columna adecuada en tu tabla de usuarios
-                            const token = generarToken(usuarioId);
-                            res.status(200).json({ message: 'Inicio de sesión exitoso', token });
+                            const token = generarToken(usuarioId); // Modifica la función generarToken para aceptar el nombre personal
+                            res.status(200).json({ message: 'Inicio de sesión exitoso', token, nombre });
                         } else {
                             res.status(401).json({ message: 'Credenciales inválidas' });
                         }
@@ -186,6 +188,20 @@ app.post('/baf', (req, res) => {
     });
 });
 
+app.get("/bafinformes", (req, res) => {
+    // Realiza una consulta a la base de datos para obtener los informes
+    const query = "SELECT * FROM cliente_baf"; // Ajusta la consulta según tu esquema de base de datos
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error("Error al obtener los informes:", err);
+            res.status(500).json({ message: "Error al obtener los informes" });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
+
 // Carga clientes portabilidad
 app.post('/portabilidad', (req, res) => {
     const {
@@ -240,16 +256,7 @@ app.post('/portabilidad', (req, res) => {
     );
 });
 
-// Ruta protegida que requiere autenticación
-app.get('/test', (req, res) => {
-    const token = generarToken(4);
-    console.log(token);
-    if (usuarioAutenticado(token)) {
-        res.status(200).json({ message: 'Acceso permitido', token });
-    } else {
-        res.status(401).json({ message: 'Acceso denegado' });
-    }
-});
+
 
 // ... Otras rutas y configuraciones
 
