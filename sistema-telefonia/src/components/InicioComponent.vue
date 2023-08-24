@@ -67,6 +67,9 @@ export default {
   display: block;
   
 }
+.todo{
+  height: 80vh;
+}
 
 @media screen and (min-width: 992px) {
   .col-md-6{

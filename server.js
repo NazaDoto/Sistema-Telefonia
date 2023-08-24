@@ -10,14 +10,14 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
-    origin: 'http://192.168.0.11:8080' // Cambia esto si tu servidor de desarrollo está en un dominio diferente
+    origin: 'http://localhost:8080' // Cambia esto si tu servidor de desarrollo está en un dominio diferente
 }));
 
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '2112',
-    database: 'sistemaTelefonia'
+    user: 'vps3_root',
+    password: 'Naza@2112',
+    database: 'vps3_sistemaTelefonia'
 });
 
 // Verifica si la conexión se estableció correctamente
