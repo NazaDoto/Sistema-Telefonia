@@ -256,7 +256,19 @@ app.post('/portabilidad', (req, res) => {
     );
 });
 
+app.get("/portinformes", (req, res) => {
+    // Realiza una consulta a la base de datos para obtener los informes
+    const query = "SELECT * FROM cliente_portabilidad"; // Ajusta la consulta según tu esquema de base de datos
 
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error("Error al obtener los informes:", err);
+            res.status(500).json({ message: "Error al obtener los informes" });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+});
 
 // ... Otras rutas y configuraciones
 

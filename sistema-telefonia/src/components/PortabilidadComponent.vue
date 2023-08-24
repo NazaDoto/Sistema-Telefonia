@@ -14,7 +14,7 @@
                         <input class="form-control" type="text" v-model="nombre" id="" placeholder="Nombre" required />
                     </div>
                     <div class="col-md-6">
-                        <select class="form-select" v-model="tipoDoc" id="" required>
+                        <select class="form-select" v-model="tipo_doc" id="" required>
                             <option selected disabled>Tipo de Documento</option>
                             <option value="dni">DNI</option>
                             <option value="pas">PAS</option>
@@ -34,20 +34,20 @@
                             required />
                     </div>
                     <div class="col-md-6">
-                        <input class="form-control" type="number" v-model="telefonoAlt" id=""
+                        <input class="form-control" type="number" v-model="telefono_alt" id=""
                             placeholder="Tel. Alternativo" />
                     </div>
                 </div>
                 <div class="mt-3 row g-3 div-forms border">
                     <h4 class="titulo-div-forms mb-2">Datos de Facturación</h4>
                     <div class="col-md-6">
-                        <input class="form-control" type="text" v-model="razon" id="" placeholder="Razón Social" />
+                        <input class="form-control" type="text" v-model="razon_social" id="" placeholder="Razón Social" />
                     </div>
                     <div class="col-md-6">
                         <input class="form-control" type="number" v-model="cuit" id="" placeholder="CUIT" />
                     </div>
                     <div class="col-md-6">
-                        <input class="form-control" type="number" v-model="ingresosBrutos" id=""
+                        <input class="form-control" type="number" v-model="ingresos_brutos" id=""
                             placeholder="Ingresos Brutos" />
                     </div>
                     <div class="col-md-6">
@@ -102,13 +102,13 @@ export default {
         return {
             apellido: '',
             nombre: '',
-            tipoDoc: 'Tipo de Documento',
+            tipo_doc: 'Tipo de Documento',
             documento: '',
             telefono: '',
-            telefonoAlt: '',
-            razon: '',
+            telefono_alt: '',
+            razon_social: '',
             cuit: '',
-            ingresosBrutos: '',
+            ingresos_brutos: '',
             modalidad: 'Modalidad',
             abono: 'Abono',
             converge: false,
@@ -121,13 +121,13 @@ export default {
             const formData = {
                 apellido: this.apellido,
                 nombre: this.nombre,
-                tipoDoc: this.tipoDoc,
+                tipo_doc: this.tipo_doc,
                 documento: this.documento,
                 telefono: this.telefono,
-                telefonoAlt: this.telefonoAlt,
-                razon: this.razon,
+                telefono_alt: this.telefono_alt,
+                razon_social: this.razon_social,
                 cuit: this.cuit,
-                ingresosBrutos: this.ingresosBrutos,
+                ingresos_brutos: this.ingresos_brutos,
                 modalidad: this.modalidad,
                 abono: this.abono,
                 converge: this.converge,
@@ -158,13 +158,13 @@ export default {
         resetForm() {
             this.apellido = "";
             this.nombre = "";
-            this.tipoDoc = "Tipo de Documento";
+            this.tipo_doc = "Tipo de Documento";
             this.documento = '';
             this.telefono = '';
-            this.telefonoAlt = '';
-            this.razon = '';
+            this.telefono_alt = '';
+            this.razon_social = '';
             this.cuit = '';
-            this.ingresosBrutos = '';
+            this.ingresos_brutos = '';
             this.modalidad = 'Modalidad';
             this.abono = 'Abono';
             this.converge = false;

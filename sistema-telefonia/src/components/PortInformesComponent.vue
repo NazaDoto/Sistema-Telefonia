@@ -2,11 +2,12 @@
     <div>
         <NavbarComponent></NavbarComponent>
         <div class="container mt-4 mb-2">
-            <h1 class="text-center">Informes BAF</h1>
+            <h1 class="text-center">Informes Portabilidad</h1>
             <div class="flex">
 
                 <div class="izquierda ancho-busqueda">
-                    <input class="form-control" v-model="busqueda" type="text" name="busqueda" id="" placeholder="Buscar" title="Ingresa nombre o apellido o fecha o email o teléfono">
+                    <input class="form-control" v-model="busqueda" type="text" name="busqueda" id="" placeholder="Buscar"
+                        title="Ingresa nombre o apellido o fecha o teléfono">
                 </div>
                 <div class="derecha mt-4 g-3">
                     <button class="btn btn-xls" @click="exportToXLS()" title="Descargar todo en formato Excel"></button>
@@ -22,25 +23,15 @@
                             <th>Nombre</th>
                             <th>Tipo de Documento</th>
                             <th>Documento</th>
-                            <th>Teléfono</th>
+                            <th>Tel. a Migrar</th>
                             <th>Tel. Alternativo</th>
-                            <th>Fecha de Nacimiento</th>
-                            <th>Correo Electrónico</th>
                             <th>Converge</th>
-                            <th>Barrio</th>
-                            <th>Calle / Mza</th>
-                            <th>Lote</th>
-                            <th>Piso</th>
-                            <th>Departamento</th>
-                            <th>Entre Calles</th>
                             <th>Razón Social</th>
                             <th>CUIT</th>
                             <th>Ingresos Brutos</th>
-                            <th>Servicio</th>
-                            <th>Velocidad</th>
+                            <th>Modalidad</th>
+                            <th>Abono</th>
                             <th>Sellout</th>
-                            <th>N° TVs</th>
-                            <th>P. Fija</th>
                             <th class="obs-head">Observaciones</th>
                             <th> </th>
                             <th> </th>
@@ -57,29 +48,21 @@
                             <td>{{ informe.documento }}</td>
                             <td>{{ informe.telefono }}</td>
                             <td>{{ informe.telefono_alt }}</td>
-                            <td>{{ formatDate(informe.fecha_nacimiento) }}</td>
-                            <td>{{ informe.email }}</td>
                             <td>{{ informe.converge ? 'Sí' : 'No' }}</td>
-                            <td>{{ informe.barrio }}</td>
-                            <td>{{ informe.calle_mza }}</td>
-                            <td>{{ informe.num_lote }}</td>
-                            <td>{{ informe.piso }}</td>
-                            <td>{{ informe.dpto }}</td>
-                            <td>{{ informe.entre_calles }}</td>
                             <td>{{ informe.razon_social }}</td>
                             <td>{{ informe.cuit }}</td>
                             <td>{{ informe.ingresos_brutos }}</td>
-                            <td>{{ informe.servicio }}</td>
-                            <td>{{ informe.velocidad }}</td>
+                            <td>{{ informe.modalidad }}</td>
+                            <td>{{ informe.abono }}</td>
                             <td>{{ informe.sellout }}</td>
-                            <td>{{ informe.num_tvs }}</td>
-                            <td>{{ informe.portabilidad_fija ? 'Sí' : 'No' }}</td>
                             <td class="obs-head">{{ informe.observaciones }}</td>
                             <td>
-                                <button class="btn btn-xls" @click="simpleExportToXLS(index)" title="Descargar esta línea en formato Excel"></button>
+                                <button class="btn btn-xls" @click="simpleExportToXLS(index)"
+                                    title="Descargar esta línea en formato Excel"></button>
                             </td>
                             <td>
-                                <button class="btn btn-pdf" @click="simpleExportToPDF(index)" title="Descargar esta línea en formato PDF"></button>
+                                <button class="btn btn-pdf" @click="simpleExportToPDF(index)"
+                                    title="Descargar esta línea en formato PDF"></button>
 
                             </td>
                         </tr>
@@ -121,14 +104,12 @@ export default {
             return this.informes.filter(informe => {
                 const apellido = informe.apellido || '';
                 const nombre = informe.nombre || '';
-                const email = informe.email || '';
                 const telefono = informe.telefono.toString() || '';
                 const fechaAlta = new Date(informe.fecha_alta).toLocaleDateString('es-ES') || new Date().toLocaleDateString('es-ES');
 
-                                return (
+                return (
                     apellido.toLowerCase().includes(this.busqueda.toLowerCase()) ||
                     nombre.toLowerCase().includes(this.busqueda.toLowerCase()) ||
-                    email.toLowerCase().includes(this.busqueda.toLowerCase()) ||
                     telefono.toLowerCase().includes(this.busqueda.toLowerCase()) ||
                     fechaAlta.toLowerCase().includes(this.busqueda.toLowerCase())
                     // Agrega más condiciones de búsqueda según tus necesidades
@@ -140,7 +121,7 @@ export default {
         async fetchInformes() {
             try {
                 // Realiza una solicitud HTTP GET para obtener los informes desde el servidor
-                const response = await axios.get("/bafinformes");
+                const response = await axios.get("/portinformes");
 
                 // Actualiza la lista de informes con los datos recibidos
                 this.informes = response.data;
@@ -158,7 +139,7 @@ export default {
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet('Informe');
             // Agrega encabezados de columna
-            worksheet.addRow(['Alta', 'Apellido', 'Nombre', 'Tipo Doc', 'Documento', 'Teléfono', 'Tel. Alt.', 'Fecha Nacimiento', 'Mail', 'Converge', 'Barrio', 'Calle / Mza', 'Lote', 'Piso', 'Depto', 'Entre Calles', 'Razón Social', 'CUIT', 'Ingresos Brutos', 'Servicio', 'Velocidad', 'Sellout', 'N° TVs', 'Port. Fija', 'Observaciones'/* ...otras columnas... */]);
+            worksheet.addRow(['Alta', 'Apellido', 'Nombre', 'Tipo Doc', 'Documento', 'Teléfono', 'Tel. Alt.', 'Converge', 'Razón Social', 'CUIT', 'Ingresos Brutos', 'Modalidad', 'Abono', 'Sellout', 'Observaciones'/* ...otras columnas... */]);
 
             // Agrega datos de informe a la hoja de trabajo
             this.informes.forEach(informe => {
@@ -171,23 +152,13 @@ export default {
                     informe.documento,
                     informe.telefono,
                     informe.telefono_alt,
-                    this.formatDate(informe.fecha_nacimiento),
-                    informe.email,
                     informe.converge ? 'Sí' : 'No',
-                    informe.barrio,
-                    informe.calle_mza,
-                    informe.num_lote,
-                    informe.piso,
-                    informe.dpto,
-                    informe.entre_calles,
                     informe.razon_social,
                     informe.cuit,
                     informe.ingresos_brutos,
-                    informe.servicio,
-                    informe.velocidad,
+                    informe.modalidad,
+                    informe.abono,
                     informe.sellout,
-                    informe.num_tvs,
-                    informe.portabilidad_fija ? 'Sí' : 'No',
                     informe.observaciones
                 ]);
             });
@@ -223,23 +194,13 @@ export default {
                 this.informes[index].documento,
                 this.informes[index].telefono,
                 this.informes[index].telefono_alt,
-                this.formatDate(this.informes[index].fecha_nacimiento),
-                this.informes[index].email,
                 this.informes[index].converge ? 'Sí' : 'No',
-                this.informes[index].barrio,
-                this.informes[index].calle_mza,
-                this.informes[index].num_lote,
-                this.informes[index].piso,
-                this.informes[index].dpto,
-                this.informes[index].entre_calles,
                 this.informes[index].razon_social,
                 this.informes[index].cuit,
                 this.informes[index].ingresos_brutos,
-                this.informes[index].servicio,
-                this.informes[index].velocidad,
+                this.informes[index].modalidad,
+                this.informes[index].abono,
                 this.informes[index].sellout,
-                this.informes[index].num_tvs,
-                this.informes[index].portabilidad_fija ? 'Sí' : 'No',
                 this.informes[index].observaciones
                 /* ...otros datos... */
             ]);
@@ -274,23 +235,13 @@ export default {
                     informe.documento,
                     informe.telefono,
                     informe.telefono_alt,
-                    this.formatDate(informe.fecha_nacimiento),
-                    informe.email,
                     informe.converge ? 'Sí' : 'No',
-                    informe.barrio,
-                    informe.calle_mza,
-                    informe.num_lote,
-                    informe.piso,
-                    informe.dpto,
-                    informe.entre_calles,
                     informe.razon_social,
                     informe.cuit,
                     informe.ingresos_brutos,
-                    informe.servicio,
-                    informe.velocidad,
+                    informe.modalidad,
+                    informe.abono,
                     informe.sellout,
-                    informe.num_tvs,
-                    informe.portabilidad_fija ? 'Sí' : 'No',
                     informe.observaciones
                 ]);
             });
@@ -298,7 +249,7 @@ export default {
 
 
             doc.autoTable({
-                head: [['ALTA', 'APELLIDO', 'NOMBRE', 'TIPO_DOC', 'DOCUMENTO', 'TELEFONO', 'TEL_ALT', 'F_NAC', 'EMAIL', '¿CONV?', 'BARRIO', 'C/MZA', 'LOTE', 'PISO', 'DEPTO', 'E/CALLES', 'RAZÓN SOC.', 'CUIT', 'I. BRUTOS', 'SERV', 'VEL', 'SELLOUT', 'N°TVS', '¿P.F.?', 'OBSERVACIONES'/* ...otras columnas... */]],
+                head: [['ALTA', 'APELLIDO', 'NOMBRE', 'TIPO_DOC', 'DOCUMENTO', 'TELEFONO', 'TEL_ALT', '¿CONV?', 'RAZÓN SOC.', 'CUIT', 'I. BRUTOS', 'MODALIDAD', 'ABONO', 'SELLOUT', 'OBSERVACIONES'/* ...otras columnas... */]],
                 body: data,
                 tableWidth: 'auto',
                 margin: { top: 20, right: 2, left: 2 },
@@ -325,27 +276,14 @@ export default {
                     this.informes[index].telefono,
                     this.informes[index].telefono_alt]];
 
-
             const data2 = [[
-                this.formatDate(this.informes[index].fecha_nacimiento),
-                this.informes[index].email,
                 this.informes[index].converge ? 'Sí' : 'No',
-                this.informes[index].barrio,
-                this.informes[index].calle_mza,
-                this.informes[index].num_lote,
-                this.informes[index].piso,
-                this.informes[index].dpto,
-                this.informes[index].entre_calles]];
-
-            const data3 = [[
                 this.informes[index].razon_social,
                 this.informes[index].cuit,
                 this.informes[index].ingresos_brutos,
-                this.informes[index].servicio,
-                this.informes[index].velocidad,
+                this.informes[index].modalidad,
+                this.informes[index].abono,
                 this.informes[index].sellout,
-                this.informes[index].num_tvs,
-                this.informes[index].portabilidad_fija ? 'Sí' : 'No',
                 this.informes[index].observaciones]];
 
             const fontSize = 10; // Tamaño de fuente personalizable
@@ -361,14 +299,6 @@ export default {
                 head: [['F_NAC', 'EMAIL', 'CONV', 'BARRIO', 'C/MZA', 'LOTE', 'PISO', 'DEPTO', 'E/CALLES'/* ...otras columnas... */]],
                 body: data2,
                 startY: startY2, // Establece la misma posición vertical para la segunda tabla
-                marginLeft: 105,
-            });
-            const startY3 = doc.autoTable.previous.finalY + 10;
-            doc.autoTable({
-                //  head: [['ALTA', 'APE', 'NOM', 'TIPO_DOC', 'DOC', 'TEL', 'TEL_ALT', 'F_NAC', 'EMAIL', 'CONV', 'BARRIO', 'C/MZA', 'LOTE', 'PISO', 'DEPTO', 'E/CALLES', 'RAZÓN SOC.', 'CUIT', 'I. BRUTOS', 'SERV', 'VEL', 'SELLOUT', 'N°TVS', 'P.FIJA', 'OBS'/* ...otras columnas... */]],
-                head: [['RAZÓN SOC.', 'CUIT', 'ING. BRUTOS', 'SERV', 'VEL', 'SELLOUT', 'N°TVS', 'P.FIJA', 'OBSERVACIONES'/* ...otras columnas... */]],
-                body: data3,
-                startY: startY3, // Establece la misma posición vertical para la segunda tabla
                 marginLeft: 105,
             });
 
@@ -440,6 +370,5 @@ th {
     }
 }
 
-/* Agrega estilos CSS según tus preferencias */
-</style>
+/* Agrega estilos CSS según tus preferencias */</style>
   

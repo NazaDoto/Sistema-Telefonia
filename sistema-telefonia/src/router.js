@@ -5,6 +5,7 @@ import PortabilidadComponent from './components/PortabilidadComponent.vue';
 import LoginComponent from './components/LoginComponent.vue';
 import RegisterComponent from './components/RegisterComponent.vue';
 import BafInformesComponent from './components/BafInformesComponent.vue';
+import PortInformesComponent from './components/PortInformesComponent.vue';
 
 const routes = [{
         path: '/',
@@ -32,6 +33,10 @@ const routes = [{
     {
         path: "/bafinformes",
         component: BafInformesComponent,
+    },
+    {
+        path: "/portinformes",
+        component: PortInformesComponent,
     },
 ];
 

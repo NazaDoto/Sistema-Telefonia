@@ -27,7 +27,7 @@
               </button>
               <ul class="dropdown-menu dropdown-menu-dark">
                 <li><router-link to="/portabilidad" class="dropdown-item">Carga de Portabilidad </router-link></li>
-                <li><a class="dropdown-item" href="#">Informes</a></li>
+                <li><router-link class="dropdown-item" to="/portinformes">Informes</router-link></li>
               </ul>
             </li>
             <li class="test nav-item">
@@ -78,6 +78,7 @@ export default {
 </script>
   
 <style scoped>
+
 .navbar-text {
   font-style: italic;
 }
@@ -97,6 +98,15 @@ export default {
 }
 
 @media screen and (max-width: 992px) {
+  .nav-item{
+    margin-top: 8px;
+  font-size: larger;
+}
+.dropdown-item{
+  margin-top: 5px;
+
+  font-size: large;
+}
   ul {
     width: 100%;
     margin-left: auto !important;
