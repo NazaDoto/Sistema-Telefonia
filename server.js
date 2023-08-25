@@ -16,7 +16,7 @@ app.use(cors({
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'vps3_root',
-    password: 'Naza@2112',
+    password: 'naza2112',
     database: 'vps3_sistemaTelefonia'
 });
 
@@ -273,7 +273,7 @@ app.get("/portinformes", (req, res) => {
 // ... Otras rutas y configuraciones
 
 // Inicia el servidor
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3500;
 app.listen(port, () => {
     console.log(`Servidor en funcionamiento en el puerto ${port}`);
 });
