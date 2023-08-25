@@ -15,9 +15,9 @@ app.use(cors({
 
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'vps3_root',
+    user: 'naza_root',
     password: 'naza2112',
-    database: 'vps3_sistemaTelefonia'
+    database: 'naza_sistema_telefonia'
 });
 
 // Verifica si la conexión se estableció correctamente
@@ -56,6 +56,7 @@ function usuarioAutenticado(token) {
 
 // Ruta para registrar un usuario
 app.post('/register', (req, res) => {
+    console.log('entro a register');
     const { usuario, contraseña, nombre, apellido, email, telefono } = req.body;
 
     // Hashea la contraseña antes de almacenarla en la base de datos
