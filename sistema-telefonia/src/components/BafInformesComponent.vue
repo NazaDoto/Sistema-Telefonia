@@ -6,7 +6,8 @@
             <div class="flex">
 
                 <div class="izquierda ancho-busqueda">
-                    <input class="form-control" v-model="busqueda" type="text" name="busqueda" id="" placeholder="Buscar" title="Ingresa nombre o apellido o fecha o email o teléfono">
+                    <input class="form-control" v-model="busqueda" type="text" name="busqueda" id="" placeholder="Buscar"
+                        title="Ingresa nombre o apellido o fecha o email o teléfono">
                 </div>
                 <div class="derecha mt-4 g-3">
                     <button class="btn btn-xls" @click="exportToXLS()" title="Descargar todo en formato Excel"></button>
@@ -76,10 +77,12 @@
                             <td>{{ informe.portabilidad_fija ? 'Sí' : 'No' }}</td>
                             <td class="obs-head">{{ informe.observaciones }}</td>
                             <td>
-                                <button class="btn btn-xls" @click="simpleExportToXLS(index)" title="Descargar esta línea en formato Excel"></button>
+                                <button class="btn btn-xls" @click="simpleExportToXLS(index)"
+                                    title="Descargar esta línea en formato Excel"></button>
                             </td>
                             <td>
-                                <button class="btn btn-pdf" @click="simpleExportToPDF(index)" title="Descargar esta línea en formato PDF"></button>
+                                <button class="btn btn-pdf" @click="simpleExportToPDF(index)"
+                                    title="Descargar esta línea en formato PDF"></button>
 
                             </td>
                         </tr>
@@ -109,6 +112,7 @@ export default {
         return {
             informes: [], // Almacena los informes cargados desde el servidor
             busqueda: '',
+            usuario_id: localStorage.getItem('id'),
         };
     },
     created() {
@@ -125,7 +129,7 @@ export default {
                 const telefono = informe.telefono.toString() || '';
                 const fechaAlta = new Date(informe.fecha_alta).toLocaleDateString('es-ES') || new Date().toLocaleDateString('es-ES');
 
-                                return (
+                return (
                     apellido.toLowerCase().includes(this.busqueda.toLowerCase()) ||
                     nombre.toLowerCase().includes(this.busqueda.toLowerCase()) ||
                     email.toLowerCase().includes(this.busqueda.toLowerCase()) ||
@@ -140,7 +144,7 @@ export default {
         async fetchInformes() {
             try {
                 // Realiza una solicitud HTTP GET para obtener los informes desde el servidor
-                const response = await axios.get("/bafinformes");
+                const response = await axios.get(`/bafinformes?usuario_id=${this.usuario_id}`);
 
                 // Actualiza la lista de informes con los datos recibidos
                 this.informes = response.data;
@@ -440,6 +444,5 @@ th {
     }
 }
 
-/* Agrega estilos CSS según tus preferencias */
-</style>
+/* Agrega estilos CSS según tus preferencias */</style>
   

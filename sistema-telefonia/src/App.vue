@@ -30,7 +30,7 @@ export default {
     checkAuthentication() {
     const isAuthenticated = !!localStorage.getItem("token");/* Agrega aquí tu lógica para verificar si el usuario está autenticado */
     if (!isAuthenticated) {
-      this.$router.push("/register");
+      this.$router.push("/login");
     } 
   },
   },

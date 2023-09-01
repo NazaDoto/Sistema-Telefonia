@@ -14,7 +14,7 @@
                         <input class="form-control" type="text" v-model="nombre" id="" placeholder="Nombre" required />
                     </div>
                     <div class="col-md-6">
-                        <select class="form-select" v-model="tipo_doc" id="" required>
+                        <select class="form-select" v-model="tipo_documento" id="" required>
                             <option selected disabled>Tipo de Documento</option>
                             <option value="dni">DNI</option>
                             <option value="pas">PAS</option>
@@ -102,7 +102,7 @@ export default {
         return {
             apellido: '',
             nombre: '',
-            tipo_doc: 'Tipo de Documento',
+            tipo_documento: 'Tipo de Documento',
             documento: '',
             telefono: '',
             telefono_alt: '',
@@ -114,6 +114,7 @@ export default {
             converge: false,
             sellout: '',
             observaciones: '',
+            usuarioId: localStorage.getItem('id'),
         };
     },
     methods: {
@@ -121,7 +122,7 @@ export default {
             const formData = {
                 apellido: this.apellido,
                 nombre: this.nombre,
-                tipo_doc: this.tipo_doc,
+                tipo_documento: this.tipo_documento,
                 documento: this.documento,
                 telefono: this.telefono,
                 telefono_alt: this.telefono_alt,
@@ -133,6 +134,8 @@ export default {
                 converge: this.converge,
                 sellout: this.sellout,
                 observaciones: this.observaciones,
+                usuarioId: this.usuarioId,
+
             };
 
             axios
@@ -158,7 +161,7 @@ export default {
         resetForm() {
             this.apellido = "";
             this.nombre = "";
-            this.tipo_doc = "Tipo de Documento";
+            this.tipo_documento = "Tipo de Documento";
             this.documento = '';
             this.telefono = '';
             this.telefono_alt = '';

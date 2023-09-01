@@ -57,7 +57,8 @@ export default {
           // Almacena el token en el almacenamiento local
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("nombre", response.data.nombre);
-          localStorage.setItem("usuario", this.usuario);
+          localStorage.setItem("usuario", response.data.nomUsuario);
+          localStorage.setItem("id", response.data.usuarioId);
           // Redirige al usuario a la página de inicio (por ejemplo, /home)
           this.$router.push("/");
           const Toast = Swal.mixin({

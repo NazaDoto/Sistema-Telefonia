@@ -4,7 +4,10 @@
     <div class="container mt-4 mb-2">
       <h1 class="text-center">Bienvenid@, {{ leerUsuario() }}</h1>
       <div v-if="esAdmin()" class="container">
-        <router-link class="btn btn-success" to="/register">Crear Usuario</router-link>
+        <div class="col-md-6">
+          <router-link class="btn btn-success" to="/register">Crear Usuario</router-link>
+
+        </div>
 
       </div>
       <div v-else class="container text-center">

@@ -83,7 +83,7 @@ export default {
         });
     },
     esAdmin() {
-      if (localStorage.getItem("usuario") == "admin") {
+      if (localStorage.getItem("usuario") != "admin") {
         this.$router.push("/");
       }
     }

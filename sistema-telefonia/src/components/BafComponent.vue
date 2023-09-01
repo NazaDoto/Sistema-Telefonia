@@ -154,6 +154,7 @@ export default {
             numTvs: null,
             portaFija: false,
             observaciones: "",
+            usuario_id: localStorage.getItem('id'),
         };
     },
     methods: {
@@ -184,6 +185,7 @@ export default {
                     numTvs: this.numTvs,
                     portaFija: this.portaFija,
                     observaciones: this.observaciones,
+                    usuarioId: this.usuario_id,
                 });
 
                 // Maneja la respuesta del servidor aquí, por ejemplo, muestra un mensaje de éxito

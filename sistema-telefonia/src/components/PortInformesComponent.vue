@@ -92,6 +92,8 @@ export default {
         return {
             informes: [], // Almacena los informes cargados desde el servidor
             busqueda: '',
+            usuario_id: localStorage.getItem('id'),
+
         };
     },
     created() {
@@ -121,7 +123,7 @@ export default {
         async fetchInformes() {
             try {
                 // Realiza una solicitud HTTP GET para obtener los informes desde el servidor
-                const response = await axios.get("/portinformes");
+                const response = await axios.get(`/portinformes?usuario_id=${this.usuario_id}`);
 
                 // Actualiza la lista de informes con los datos recibidos
                 this.informes = response.data;
