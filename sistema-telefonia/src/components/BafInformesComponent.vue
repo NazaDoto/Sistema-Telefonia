@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="ancho border border-2 mt-2">
-                <table class="table table-dark table-striped text-center" id="informe-table">
+                <table v-if="usuarioId != 1" class="table table-dark table-striped text-center" id="informe-table">
                     <thead>
                         <tr>
                             <th>Alta</th>
@@ -88,6 +88,81 @@
                         </tr>
                     </tbody>
                 </table>
+                <table v-else class="table table-dark table-striped text-center" id="informe-table">
+                    <thead>
+                        <tr>
+                            <th>Empleado</th>
+                            <th>Alta</th>
+                            <th>Apellido</th>
+                            <th>Nombre</th>
+                            <th>Tipo de Documento</th>
+                            <th>Documento</th>
+                            <th>Teléfono</th>
+                            <th>Tel. Alternativo</th>
+                            <th>Fecha de Nacimiento</th>
+                            <th>Correo Electrónico</th>
+                            <th>Converge</th>
+                            <th>Barrio</th>
+                            <th>Calle / Mza</th>
+                            <th>Lote</th>
+                            <th>Piso</th>
+                            <th>Departamento</th>
+                            <th>Entre Calles</th>
+                            <th>Razón Social</th>
+                            <th>CUIT</th>
+                            <th>Ingresos Brutos</th>
+                            <th>Servicio</th>
+                            <th>Velocidad</th>
+                            <th>Sellout</th>
+                            <th>N° TVs</th>
+                            <th>P. Fija</th>
+                            <th class="obs-head">Observaciones</th>
+                            <th> </th>
+                            <th> </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Itera sobre los datos de la lista de informes y muestra cada fila en la tabla -->
+                        <tr v-for="(informe, index) in informesFiltrados" :key="index">
+                            <td>{{ informe.nombre_usuario}}</td>
+                            <td>{{ formatDate(informe.fecha_alta) }}</td>
+                            <td>{{ informe.apellido }}</td>
+                            <td>{{ informe.nombre }}</td>
+                            <td>{{ informe.tipo_documento }}</td>
+                            <td>{{ informe.documento }}</td>
+                            <td>{{ informe.telefono }}</td>
+                            <td>{{ informe.telefono_alt }}</td>
+                            <td>{{ formatDate(informe.fecha_nacimiento) }}</td>
+                            <td>{{ informe.email }}</td>
+                            <td>{{ informe.converge ? 'Sí' : 'No' }}</td>
+                            <td>{{ informe.barrio }}</td>
+                            <td>{{ informe.calle_mza }}</td>
+                            <td>{{ informe.num_lote }}</td>
+                            <td>{{ informe.piso }}</td>
+                            <td>{{ informe.dpto }}</td>
+                            <td>{{ informe.entre_calles }}</td>
+                            <td>{{ informe.razon_social }}</td>
+                            <td>{{ informe.cuit }}</td>
+                            <td>{{ informe.ingresos_brutos }}</td>
+                            <td>{{ informe.servicio }}</td>
+                            <td>{{ informe.velocidad }}</td>
+                            <td>{{ informe.sellout }}</td>
+                            <td>{{ informe.num_tvs }}</td>
+                            <td>{{ informe.portabilidad_fija ? 'Sí' : 'No' }}</td>
+                            <td class="obs-head">{{ informe.observaciones }}</td>
+                            <td>
+                                <button class="btn btn-xls" @click="simpleExportToXLS(index)"
+                                    title="Descargar esta línea en formato Excel"></button>
+                            </td>
+                            <td>
+                                <button class="btn btn-pdf" @click="simpleExportToPDF(index)"
+                                    title="Descargar esta línea en formato PDF"></button>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div v-if="informesFiltrados.length === 0" class="text-center mt-3">
                     No se encontraron resultados para esa búsqueda.
                 </div>
@@ -123,6 +198,7 @@ export default {
         informesFiltrados() {
             // Filtra los informes basándose en el valor de busqueda
             return this.informes.filter(informe => {
+                const empleado = informe.nombre_usuario || '';
                 const apellido = informe.apellido || '';
                 const nombre = informe.nombre || '';
                 const email = informe.email || '';
@@ -130,6 +206,7 @@ export default {
                 const fechaAlta = new Date(informe.fecha_alta).toLocaleDateString('es-ES') || new Date().toLocaleDateString('es-ES');
 
                 return (
+                    empleado.toLowerCase().includes(this.busqueda.toLowerCase()) ||
                     apellido.toLowerCase().includes(this.busqueda.toLowerCase()) ||
                     nombre.toLowerCase().includes(this.busqueda.toLowerCase()) ||
                     email.toLowerCase().includes(this.busqueda.toLowerCase()) ||

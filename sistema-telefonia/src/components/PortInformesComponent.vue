@@ -15,7 +15,62 @@
                 </div>
             </div>
             <div class="ancho border border-2 mt-2">
-                <table class="table table-dark table-striped text-center" id="informe-table">
+                <table v-if="usuarioId == 1" class="table table-dark table-striped text-center" id="informe-table">
+                    <thead>
+                        <tr>
+                            <th>Empleado</th>
+                            <th>Alta</th>
+                            <th>Apellido</th>
+                            <th>Nombre</th>
+                            <th>Tipo de Documento</th>
+                            <th>Documento</th>
+                            <th>Tel. a Migrar</th>
+                            <th>Tel. Alternativo</th>
+                            <th>Converge</th>
+                            <th>Razón Social</th>
+                            <th>CUIT</th>
+                            <th>Ingresos Brutos</th>
+                            <th>Modalidad</th>
+                            <th>Abono</th>
+                            <th>Sellout</th>
+                            <th class="obs-head">Observaciones</th>
+                            <th> </th>
+                            <th> </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Itera sobre los datos de la lista de informes y muestra cada fila en la tabla -->
+                        <tr v-for="(informe, index) in informesFiltrados" :key="index">
+                            <td>{{ informe.nombre_usuario }}</td>
+                            <td>{{ formatDate(informe.fecha_alta) }}</td>
+                            <td>{{ informe.apellido }}</td>
+                            <td>{{ informe.nombre }}</td>
+                            <td>{{ informe.tipo_documento }}</td>
+                            <td>{{ informe.documento }}</td>
+                            <td>{{ informe.telefono }}</td>
+                            <td>{{ informe.telefono_alt }}</td>
+                            <td>{{ informe.converge ? 'Sí' : 'No' }}</td>
+                            <td>{{ informe.razon_social }}</td>
+                            <td>{{ informe.cuit }}</td>
+                            <td>{{ informe.ingresos_brutos }}</td>
+                            <td>{{ informe.modalidad }}</td>
+                            <td>{{ informe.abono }}</td>
+                            <td>{{ informe.sellout }}</td>
+                            <td class="obs-head">{{ informe.observaciones }}</td>
+                            <td>
+                                <button class="btn btn-xls" @click="simpleExportToXLS(index)"
+                                    title="Descargar esta línea en formato Excel"></button>
+                            </td>
+                            <td>
+                                <button class="btn btn-pdf" @click="simpleExportToPDF(index)"
+                                    title="Descargar esta línea en formato PDF"></button>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table v-else class="table table-dark table-striped text-center" id="informe-table">
                     <thead>
                         <tr>
                             <th>Alta</th>

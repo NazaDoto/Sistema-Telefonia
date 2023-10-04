@@ -221,16 +221,33 @@ app.post('/baf', (req, res) => {
 
 app.get("/bafinformes", (req, res) => {
     const usuario_id = req.query.usuario_id;
-    // Realiza una consulta a la base de datos para obtener los informes
-    const query = "SELECT * FROM cliente_baf WHERE usuario_id = ?"; // Ajusta la consulta según tu esquema de base de datos
-    connection.query(query, [usuario_id], (err, results) => {
-        if (err) {
-            console.error("Error al obtener los informes:", err);
-            res.status(500).json({ message: "Error al obtener los informes" });
-        } else {
-            res.status(200).json(results);
-        }
-    });
+
+    if (usuario_id == 1) {
+        const query = `SELECT cliente_baf.*, usuarios.nombre AS nombre_usuario
+        FROM cliente_baf
+        INNER JOIN usuarios ON cliente_baf.usuario_id = usuarios.id;
+        `; // Ajusta la consulta según tu esquema de base de datos
+        connection.query(query, [usuario_id], (err, results) => {
+            if (err) {
+                console.error("Error al obtener los informes:", err);
+                res.status(500).json({ message: "Error al obtener los informes" });
+            } else {
+                res.status(200).json(results);
+            }
+        });
+    } else {
+
+
+        const query = "SELECT * FROM cliente_baf WHERE usuario_id = ?"; // Ajusta la consulta según tu esquema de base de datos
+        connection.query(query, [usuario_id], (err, results) => {
+            if (err) {
+                console.error("Error al obtener los informes:", err);
+                res.status(500).json({ message: "Error al obtener los informes" });
+            } else {
+                res.status(200).json(results);
+            }
+        });
+    }
 });
 
 // Carga clientes portabilidad
@@ -292,17 +309,32 @@ app.post('/portabilidad', (req, res) => {
 app.get("/portinformes", (req, res) => {
     // Realiza una consulta a la base de datos para obtener los informes
     const usuario_id = req.query.usuario_id;
+    if (usuario_id == 1) {
+        const query = `SELECT cliente_baf.*, usuarios.nombre AS nombre_usuario
+        FROM cliente_baf
+        INNER JOIN usuarios ON cliente_baf.usuario_id = usuarios.id;
+        `;
+        connection.query(query, [usuario_id], (err, results) => {
+            if (err) {
+                console.error("Error al obtener los informes:", err);
+                res.status(500).json({ message: "Error al obtener los informes" });
+            } else {
+                res.status(200).json(results);
+            }w
+        });
+    } else {
 
-    const query = "SELECT * FROM cliente_portabilidad WHERE usuario_id = ?"; // Ajusta la consulta según tu esquema de base de datos
+        const query = "SELECT * FROM cliente_portabilidad WHERE usuario_id = ?"; // Ajusta la consulta según tu esquema de base de datos
+        connection.query(query, [usuario_id], (err, results) => {
+            if (err) {
+                console.error("Error al obtener los informes:", err);
+                res.status(500).json({ message: "Error al obtener los informes" });
+            } else {
+                res.status(200).json(results);
+            }
+        });
+    }
 
-    connection.query(query, [usuario_id], (err, results) => {
-        if (err) {
-            console.error("Error al obtener los informes:", err);
-            res.status(500).json({ message: "Error al obtener los informes" });
-        } else {
-            res.status(200).json(results);
-        }
-    });
 });
 
 // ... Otras rutas y configuraciones

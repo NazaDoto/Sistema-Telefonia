@@ -3,16 +3,16 @@
     <NavbarComponent></NavbarComponent>
     <div class="container mt-4 mb-2">
       <h1 class="text-center">Bienvenid@, {{ leerUsuario() }}</h1>
-      <div v-if="esAdmin()" class="container">
-        <div class="col-md-6">
-          <router-link class="btn btn-success" to="/register">Crear Usuario</router-link>
 
+      <div class="container text-center">
+        <div v-if="esAdmin()" class="row g-3 div-forms border admin">
+          <div class="col-md-12 ">
+            <h2 class="titulo-div-forms mb-2 ">Herramientas Administrador</h2>
+            <router-link class="btn btn-success" to="/register">Cargar Empleado</router-link>
+          </div>
         </div>
-
-      </div>
-      <div v-else class="container text-center">
+        <br>
         <div class="row g-3 div-forms border">
-
           <div class="col-md-6">
             <h2 class="titulo-div-forms mb-2">BAF</h2>
             <router-link class="btn btn-success" to="/baf">Cargar Cliente</router-link><br>
@@ -53,41 +53,47 @@ export default {
 </script>
   
 <style scoped>
-
+.admin{
+  display: block !important;
+  margin: auto !important;
+}
 .titulo-div-forms {
-    margin: auto;
+  margin: auto;
 }
 
 .div-forms {
-    margin: auto;
-    padding: 20px;
-    border-color: black !important;
-    border-radius: 5px !important;
-    justify-content: center !important;
+  margin: auto;
+  padding: 20px;
+  border-color: black !important;
+  border-radius: 5px !important;
+  justify-content: center !important;
 }
 
-.btn{
+.btn {
   display: block;
-  
+
 }
-.todo{
+
+.todo {
   height: 80vh;
 }
 
 @media screen and (min-width: 992px) {
-  .col-md-6{
+  .col-md-6 {
     display: block !important;
   }
+
   .btn {
     margin: auto;
     display: block !important;
-}
-.div-forms{
-  width: 40%;
-  display: inline-flex !important;
-  margin:20px;
+  }
 
-}
+  .div-forms {
+    width: 40%;
+    display: inline-flex !important;
+    margin: 20px;
+
+  }
 
 }
 </style>
